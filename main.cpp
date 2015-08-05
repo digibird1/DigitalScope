@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #include <QApplication>
 
 #include <iostream>
@@ -18,3 +21,12 @@ int main(int argc, char ** argv )
     return app.exec();
 }
 
+/*
+ * TODO:
+ *
+ * Add suppot for soundcard, RIGOL scope
+ * Add button for DC / AC
+ * ADD drop down menu to select the different scopes
+ * Add a window to edit matlab scripts
+ *
+ */

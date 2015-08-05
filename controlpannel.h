@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #ifndef CONTROLPANNEL_H
 #define CONTROLPANNEL_H
 
@@ -46,6 +49,10 @@ public:
 
     bool isStop(){return m_isStop;}
     bool isSoftTrigger(){return m_isSOftTrigger;}
+
+    //Check if a function checkbox is checked
+    //Opptions are F1, F2 ... F6
+    bool isCheckedUsrFunc(QString X);
 
     
 signals:

@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #include "controlpannel.h"
 
 ControlPannel::ControlPannel(QWidget *parent) :
@@ -188,7 +191,12 @@ ControlPannel::ControlPannel(QWidget *parent) :
 
     connect(Button_Channel,SIGNAL(clicked()),this,SLOT(slot_ChannelChanged()));
 
-    connect(CheckBox_F1,SIGNAL(valueChanged(int)),this,SLOT(slot_FX_Changed(int)));
+    connect(CheckBox_F1,SIGNAL(stateChanged(int)),this,SLOT(slot_FX_Changed(int)));
+    connect(CheckBox_F2,SIGNAL(stateChanged(int)),this,SLOT(slot_FX_Changed(int)));
+    connect(CheckBox_F3,SIGNAL(stateChanged(int)),this,SLOT(slot_FX_Changed(int)));
+    connect(CheckBox_F4,SIGNAL(stateChanged(int)),this,SLOT(slot_FX_Changed(int)));
+    connect(CheckBox_F5,SIGNAL(stateChanged(int)),this,SLOT(slot_FX_Changed(int)));
+    connect(CheckBox_F6,SIGNAL(stateChanged(int)),this,SLOT(slot_FX_Changed(int)));
 }
 
 void ControlPannel::setTriggerLevel(int Level){
@@ -270,4 +278,15 @@ void ControlPannel::slot_ChannelChanged(){
 
 void ControlPannel::slot_FX_Changed(int a){
     emit FX_Changed();
+}
+
+bool ControlPannel::isCheckedUsrFunc(QString X){
+    if(X=="F1") return CheckBox_F1->isChecked();
+    if(X=="F2") return CheckBox_F2->isChecked();
+    if(X=="F3") return CheckBox_F3->isChecked();
+    if(X=="F4") return CheckBox_F4->isChecked();
+    if(X=="F5") return CheckBox_F5->isChecked();
+    if(X=="F6") return CheckBox_F6->isChecked();
+
+    return false;
 }

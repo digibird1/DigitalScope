@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #ifndef TRIGGER_H
 #define TRIGGER_H
 

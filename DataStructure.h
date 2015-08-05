@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #ifndef DATASTRUCTURE_H
 #define DATASTRUCTURE_H
 
@@ -6,6 +9,7 @@
 #include <cstring>
 #include <QVector>
 #include <QPointF>
+#include <QString>
 
 typedef unsigned short    uint16_t;
 typedef unsigned int      uint32_t;
@@ -44,6 +48,12 @@ struct PlotDataStruct{//This is the data structure passed to the plotting widget
     QVector<QPointF> Channel1;
     QVector<QPointF> Channel2;
 
+};
+
+struct UsrFunctionStruct{
+    QString FunctionName;
+    double ReturnValue;
+    QString Unit;
 };
 
 

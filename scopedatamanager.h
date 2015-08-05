@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #ifndef SCOPEDATAMANAGER_H
 #define SCOPEDATAMANAGER_H
 
@@ -8,6 +11,7 @@
 #include "controlpannel.h"
 #include "fftwidget.h"
 #include "client.h"
+#include "runoctavescript.h"
 
 class ScopeDataManager : public QObject
 {
@@ -16,6 +20,10 @@ public:
     explicit ScopeDataManager(int argc, char ** argv,QObject *parent = 0);
 
     void AutoScale(const PlotDataStruct &v,const double &Time);
+
+    //This functions calculates the user functions
+    //and updates the value in the display
+    void updateUsrFunctionValues(const PlotDataStruct &a);
 
 private:
     SerialMain *serial;
@@ -30,6 +38,8 @@ private:
 
     QTimer *m_timer;//timer needed for the simulation
 
+    RunOctaveScript *m_runOctaveScript;
+
     
 signals:
     void signal_SimDone(const QByteArray&);
@@ -43,6 +53,8 @@ public slots:
     void slot_ChannelChange(bool b);
 
     void slot_SimulateData();
+
+    void slot_setUsrFunctionOn();
 
 
 

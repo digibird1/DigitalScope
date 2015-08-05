@@ -5,10 +5,7 @@
 % The Unit a string, return "" of no unit
 
 function [FunctionName, RetrunValue, Unit] = ExampleUsrFunction (XVecCh1,YVecCh1,XVecCh2,YVecCh2)
-
-
-  resultScalar = (inScalar * pi);
-  resultString = strcat ('Good morning Mr. ', inString);
-  resultMatrix = (inMatrix + 1);
-
+  FunctionName = "ExampleUsrFunction";
+  RetrunValue = 1000001;
+  Unit = "cm";
 endfunction

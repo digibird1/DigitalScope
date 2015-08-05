@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #ifndef SCOPEDISPLAY_H
 #define SCOPEDISPLAY_H
 
@@ -26,6 +29,8 @@ public:
 
      void set2Channel(bool b){m_Channel2=b;update();}
 
+     //Set the Value of the User function This function should be called before the
+     // update is called for the actual sample
      void setF1Value(double v){F1Value=v;}
      void setF2Value(double v){F2Value=v;}
      void setF3Value(double v){F3Value=v;}

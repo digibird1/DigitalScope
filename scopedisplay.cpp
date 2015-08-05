@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #include "scopedisplay.h"
 #include <iostream>
 
@@ -12,7 +15,7 @@ ScopeDisplay::ScopeDisplay(QWidget *parent) :
     m_YOffset=0;
 
     BorderOffset = 50;
-    FrameSize=700;
+    FrameSize=600;
 
     m_XMax=512;
     m_YMax=256;
@@ -25,8 +28,8 @@ ScopeDisplay::ScopeDisplay(QWidget *parent) :
     m_TriggerLineY=90;
     m_YScale=1.;
 
-    setMinimumSize(800,800);
-    setFixedSize(800,800);
+    setMinimumSize(700,700);
+    setFixedSize(700,700);
 
 
     m_TimeBase=10000;//um
@@ -41,12 +44,12 @@ ScopeDisplay::ScopeDisplay(QWidget *parent) :
     F5Value=-99999999999;//0;
     F6Value=-99999999999;//0;
 
-    F1_On=true;
-    F2_On=true;
-    F3_On=true;
-    F4_On=true;
-    F5_On=true;
-    F6_On=true;
+    F1_On=false;
+    F2_On=false;
+    F3_On=false;
+    F4_On=false;
+    F5_On=false;
+    F6_On=false;
 
 }
 

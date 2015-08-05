@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     fftwidget.cpp \
     plot.cpp \
     client.cpp \
-    DataStructure.cpp
+    DataStructure.cpp \
+    runoctavescript.cpp
 
 
 HEADERS += \
@@ -30,7 +31,8 @@ HEADERS += \
     controlpannel.h \
     fftwidget.h \
     plot.h \
-    client.h
+    client.h \
+    runoctavescript.h
 
 #INCLUDEPATH +=kiss_fft130
 #SOURCES += kiss_fft130/kiss_fft.c
@@ -46,3 +48,9 @@ LIBS += -L./qwt-6.1/lib -L../DigitalScope/qwt-6.1/lib -lqwt
 
 #FFTW library and C++ wrapper files
 LIBS +=-L/usr/lib -lfft -l2Dfft -lfftw3
+
+#Octave
+INCLUDEPATH += /usr/include/octave-3.6.4
+LIBS += -L/usr/lib/x86_64-linux-gnu -loctinterp -loctave #-lcruft
+
+

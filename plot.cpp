@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #include "plot.h"
 
 #include <qwt_math.h>
@@ -217,7 +220,10 @@ void Plot::setLogX(bool on){
 }
 
 void Plot::setLogY(bool on){
-
+/*
+ * Amplification means voltage ratio V2 / V1 = Vout / Vin, and voltage gain in dB = 20 × log (V2 / V1).
+ *
+  */
     if(!on){
 
         setAxisScaleEngine( QwtPlot::yLeft, new QwtLinearScaleEngine );

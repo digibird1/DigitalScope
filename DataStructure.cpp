@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #include "DataStructure.h"
 
 DataStruct convertByteArrayToStruct(const QByteArray& a, std::string Source){//Sources are Arduino, Pi

@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #ifndef SERIALMAIN_H
 #define SERIALMAIN_H
 

@@ -1,3 +1,6 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
 #include "scopedatamanager.h"
 
 #include <iostream>
@@ -81,6 +84,8 @@ ScopeDataManager::ScopeDataManager(int argc, char ** argv,QObject *parent) :
     m_Pannel = new ControlPannel;
     fftWidget = new FFTWidget;
 
+    m_runOctaveScript = new RunOctaveScript;
+
     display->show();
     m_Pannel->show();
 
@@ -123,6 +128,8 @@ ScopeDataManager::ScopeDataManager(int argc, char ** argv,QObject *parent) :
     connect(m_Pannel,SIGNAL(AutoScale()),this,SLOT(slot_AutoScale()));
 
     connect(m_Pannel,SIGNAL(Channel2ON(bool)),this,SLOT(slot_ChannelChange(bool)));
+
+    connect(m_Pannel,SIGNAL(FX_Changed()),this,SLOT(slot_setUsrFunctionOn()));
 
 
 }
@@ -247,6 +254,8 @@ void ScopeDataManager::slot_receiveData(const QByteArray &a){
     if(m_Pannel->isStop()) return;
 
 
+
+    updateUsrFunctionValues(PlotData);
 
     display->setData(m_Trigger.EdgeTrigger(PlotData),SampleRate);
 
@@ -406,3 +415,55 @@ void ScopeDataManager::slot_ChannelChange(bool b){
     m_is2Channel=b;
 
 }
+
+void ScopeDataManager::slot_setUsrFunctionOn(){
+    std::cout<<"DDD slot_setUsrFunctionOn()"<<std::endl;
+    display->slot_showF1(m_Pannel->isCheckedUsrFunc("F1"));
+    display->slot_showF2(m_Pannel->isCheckedUsrFunc("F2"));
+    display->slot_showF3(m_Pannel->isCheckedUsrFunc("F3"));
+    display->slot_showF4(m_Pannel->isCheckedUsrFunc("F4"));
+    display->slot_showF5(m_Pannel->isCheckedUsrFunc("F5"));
+    display->slot_showF6(m_Pannel->isCheckedUsrFunc("F6"));
+}
+
+void ScopeDataManager::updateUsrFunctionValues(const PlotDataStruct &a){
+    if(m_Pannel->isCheckedUsrFunc("F1")){
+
+
+
+        display->setF1Value(m_runOctaveScript->runUsrFunction(a).ReturnValue);
+    }
+
+    if(m_Pannel->isCheckedUsrFunc("F2")){
+        display->setF2Value(100);
+    }
+
+    if(m_Pannel->isCheckedUsrFunc("F3")){
+        display->setF3Value(100);
+    }
+
+    if(m_Pannel->isCheckedUsrFunc("F4")){
+        display->setF4Value(100);
+    }
+
+    if(m_Pannel->isCheckedUsrFunc("F5")){
+        display->setF5Value(100);
+    }
+
+    if(m_Pannel->isCheckedUsrFunc("F6")){
+        display->setF6Value(100);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

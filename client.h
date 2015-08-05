@@ -1,3 +1,7 @@
+/*
+ * (c) by Daniel Pelikan 2013,2014,2015
+ */
+
 #ifndef CLIENT_H
 #define CLIENT_H
 
