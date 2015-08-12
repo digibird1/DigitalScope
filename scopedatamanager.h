@@ -12,12 +12,14 @@
 #include "fftwidget.h"
 #include "client.h"
 #include "runoctavescript.h"
+#include "selectinstrument.h"
+#include "userfunctionedit.h"
 
-class ScopeDataManager : public QObject
+class ScopeDataManager : public QWidget //QObject
 {
     Q_OBJECT
 public:
-    explicit ScopeDataManager(int argc, char ** argv,QObject *parent = 0);
+    explicit ScopeDataManager(int argc, char ** argv,QWidget *parent = 0);
 
     void AutoScale(const PlotDataStruct &v,const double &Time);
 
@@ -40,6 +42,9 @@ private:
 
     RunOctaveScript *m_runOctaveScript;
 
+    QGridLayout *MainLayout;
+
+    UserFunctionEdit *m_UserFunctionEdit;
     
 signals:
     void signal_SimDone(const QByteArray&);
@@ -56,6 +61,8 @@ public slots:
 
     void slot_setUsrFunctionOn();
 
+    void slot_ConnectInstrument(QString Inst, QString Option);
+
 
 
 private:
@@ -65,6 +72,8 @@ private:
     bool m_isNetworkData;
 
     bool m_is2Channel;
+
+    SelectInstrument *m_InstSelect;
     
 };
 

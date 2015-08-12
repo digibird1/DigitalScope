@@ -19,11 +19,11 @@ RunOctaveScript::RunOctaveScript()
 }
 
 RunOctaveScript::~RunOctaveScript(){
-    do_octave_atexit ();
+    //do_octave_atexit ();
 }
 
 
-UsrFunctionStruct RunOctaveScript::runUsrFunction(const PlotDataStruct &a){
+UsrFunctionStruct RunOctaveScript::runUsrFunction(const PlotDataStruct &a, QString ScriptName){
       UsrFunctionStruct UsrResult;
 
 
@@ -50,7 +50,7 @@ UsrFunctionStruct RunOctaveScript::runUsrFunction(const PlotDataStruct &a){
       functionArguments (2) = XVectorCh2;
       functionArguments (3) = YVectorCh2;
 
-      const octave_value_list result = feval ("ExampleUsrFunction", functionArguments, 1);
+      const octave_value_list result = feval (ScriptName.toStdString(), functionArguments, 1);
 
       if(result.empty()){
           std::cerr<<"User Function Script Error, No return Value!!!!"<<std::endl;
@@ -58,7 +58,8 @@ UsrFunctionStruct RunOctaveScript::runUsrFunction(const PlotDataStruct &a){
           UsrResult.ReturnValue=0;
           UsrResult.Unit=QString("");
       //    do_octave_atexit ();
-          //return UsrResult;
+
+          return UsrResult;
       }
 
 

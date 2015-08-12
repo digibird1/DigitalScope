@@ -35,7 +35,7 @@ ScopeDisplay::ScopeDisplay(QWidget *parent) :
     m_TimeBase=10000;//um
 
     m_SampleRate=0;
-
+/*
     //Initialize the user functions
     F1Value=-9999999999899;//0;
     F2Value=-99999999999;//0;
@@ -43,7 +43,7 @@ ScopeDisplay::ScopeDisplay(QWidget *parent) :
     F4Value=-99999999999;//0;
     F5Value=-99999999999;//0;
     F6Value=-99999999999;//0;
-
+*/
     F1_On=false;
     F2_On=false;
     F3_On=false;
@@ -51,14 +51,15 @@ ScopeDisplay::ScopeDisplay(QWidget *parent) :
     F5_On=false;
     F6_On=false;
 
+
+
+
 }
 
 
 
 void ScopeDisplay::paintEvent(QPaintEvent *event){
     QPainter painter(this);
-
-
 
 
 
@@ -80,10 +81,11 @@ void ScopeDisplay::paintEvent(QPaintEvent *event){
     //trigger line
     if(m_isSoftTrigger){
         painter.setPen(QPen(Qt::blue,2));
-        painter.drawLine(TransformIntoWidgetCoordinate(QPointF(-m_XOrgin,m_TriggerLineY)),TransformIntoWidgetCoordinate(QPointF(m_XOrgin,m_TriggerLineY)));//Horizontal Line
+        painter.drawLine(TransformIntoWidgetCoordinate(QPointF(-m_XOrgin,m_TriggerLineY*m_YScale+m_YOffset)),
+                         TransformIntoWidgetCoordinate(QPointF(m_XOrgin,m_TriggerLineY*m_YScale+m_YOffset)));//Horizontal Line
         QString text;
         text.setNum(m_TriggerLineY);
-        painter.drawText(TransformIntoWidgetCoordinate(QPointF(-m_XOrgin,m_TriggerLineY)),text);
+        painter.drawText(TransformIntoWidgetCoordinate(QPointF(-m_XOrgin,m_TriggerLineY*m_YScale+m_YOffset)),text);
     }
 
     //print Function
@@ -191,18 +193,24 @@ void ScopeDisplay::paintEvent(QPaintEvent *event){
     painter.drawText(BorderOffset ,FrameSize+BorderOffset,TimeBaseLable);
 
     QString tmp;
-    tmp.setNum(F1Value,'e',10);
-    if(F1_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-40,QString("F1: "+tmp));
-    tmp.setNum(F2Value,'e',10);
-    if(F2_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-55,QString("F2: "+tmp));
-    tmp.setNum(F3Value,'e',10);
-    if(F3_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-70,QString("F3: "+tmp));
-    tmp.setNum(F4Value,'e',10);
-    if(F4_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-85,QString("F4: "+tmp));
-    tmp.setNum(F5Value,'e',10);
-    if(F5_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-100,QString("F5: "+tmp));
-    tmp.setNum(F6Value,'e',10);
-    if(F6_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-115,QString("F6: "+tmp));
+    tmp.setNum(F1Value.ReturnValue,'e',10);
+    if(F1_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-40,
+                              QString("F1: "+F1Value.FunctionName+": "+tmp+" "+F1Value.Unit));
+    tmp.setNum(F2Value.ReturnValue,'e',10);
+    if(F2_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-55,
+                              QString("F2: "+F2Value.FunctionName+": "+tmp+" "+F2Value.Unit));
+    tmp.setNum(F3Value.ReturnValue,'e',10);
+    if(F3_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-70,
+                              QString("F3: "+F3Value.FunctionName+": "+tmp+" "+F3Value.Unit));
+    tmp.setNum(F4Value.ReturnValue,'e',10);
+    if(F4_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-85,
+                              QString("F4: "+F4Value.FunctionName+": "+tmp+" "+F4Value.Unit));
+    tmp.setNum(F5Value.ReturnValue,'e',10);
+    if(F5_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-100,
+                              QString("F5: "+F5Value.FunctionName+": "+tmp+" "+F5Value.Unit));
+    tmp.setNum(F6Value.ReturnValue,'e',10);
+    if(F6_On)painter.drawText(BorderOffset ,FrameSize+BorderOffset-115,
+                              QString("F6: "+F6Value.FunctionName+": "+tmp+" "+F6Value.Unit));
 
     //Amplitude
     QString Amplitude;

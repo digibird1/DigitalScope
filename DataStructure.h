@@ -51,9 +51,9 @@ struct PlotDataStruct{//This is the data structure passed to the plotting widget
 };
 
 struct UsrFunctionStruct{
-    QString FunctionName;
-    double ReturnValue;
-    QString Unit;
+    QString FunctionName="";
+    double ReturnValue=0;
+    QString Unit="";
 };
 
 

@@ -19,7 +19,10 @@ SOURCES += main.cpp \
     plot.cpp \
     client.cpp \
     DataStructure.cpp \
-    runoctavescript.cpp
+    runoctavescript.cpp \
+    instrumentcontrol.cpp \
+    selectinstrument.cpp \
+    userfunctionedit.cpp
 
 
 HEADERS += \
@@ -32,7 +35,10 @@ HEADERS += \
     fftwidget.h \
     plot.h \
     client.h \
-    runoctavescript.h
+    runoctavescript.h \
+    instrumentcontrol.h \
+    selectinstrument.h \
+    userfunctionedit.h
 
 #INCLUDEPATH +=kiss_fft130
 #SOURCES += kiss_fft130/kiss_fft.c
@@ -51,6 +57,8 @@ LIBS +=-L/usr/lib -lfft -l2Dfft -lfftw3
 
 #Octave
 INCLUDEPATH += /usr/include/octave-3.6.4
+INCLUDEPATH += /usr/include/octave-3.8.1
+INCLUDEPATH += /usr/include/octave-3.8.1/octave
 LIBS += -L/usr/lib/x86_64-linux-gnu -loctinterp -loctave #-lcruft
 
 

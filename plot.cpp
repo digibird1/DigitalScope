@@ -197,6 +197,7 @@ void Plot::showData( const double *frequency, const double *amplitude, int count
     setAutoReplot( doReplot );
 
 
+    //setAxisScale(QwtPlot::yLeft,d_average->minYValue(),d_average->maxYValue()*2);
     //d_curve2->setSamples( frequency, phase, count );
 
 }
@@ -236,4 +237,8 @@ void Plot::setLogY(bool on){
         setAxisScale(QwtPlot::yLeft,d_average->minYValue(),d_average->maxYValue()*2);
     }
 
+}
+
+void Plot::autoScale(bool b){
+    setAxisScale(QwtPlot::yLeft,d_average->minYValue(),d_average->maxYValue()*2);
 }

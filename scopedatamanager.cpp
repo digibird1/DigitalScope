@@ -8,14 +8,18 @@
 #include <cmath>
 #include <cstring>
 
-ScopeDataManager::ScopeDataManager(int argc, char ** argv,QObject *parent) :
-    QObject(parent)
+ScopeDataManager::ScopeDataManager(int argc, char ** argv,QWidget *parent) :
+    QWidget(parent)
 {
+
+
 
     m_isNetworkData=false;
     m_isSerialData=false;
 
     m_is2Channel=false;
+
+    m_InstSelect = new SelectInstrument;
 
     //Interpret arguments:
     QString SerialPort = "";
@@ -45,34 +49,45 @@ ScopeDataManager::ScopeDataManager(int argc, char ** argv,QObject *parent) :
     std::cout<<"SimFrequency (not yet used)"<<SimFrequency.toStdString()<<std::endl;
 
 
-    if(SerialPort=="" && NetworkAddr =="" && SimFrequency == "") quick_exit(-1);
+    if(SerialPort=="" && NetworkAddr =="" && SimFrequency == "")// quick_exit(-1);
+    {
+        connect(m_InstSelect,SIGNAL(signal_SelectionDone(QString,QString)),this,SLOT(slot_ConnectInstrument(QString,QString)));
+        m_InstSelect->show();
 
 
-    if(SerialPort!=""){
-        serial= new SerialMain(SerialPort);
-        connect(serial,SIGNAL(dataReceived(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
-        m_isSerialData=true;
-    }
-    else if(NetworkAddr!=""){
-        client = new Client(NetworkAddr);
-        connect(client,SIGNAL(dataReceived(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
-        m_isNetworkData=true;
-        m_is2Channel=true;
-    }
-    else if(SimFrequency!=""){
 
-        m_timer = new QTimer(this);
-        connect(m_timer, SIGNAL(timeout()), this, SLOT(slot_SimulateData()));
-        connect(this,SIGNAL(signal_SimDone(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
-        m_timer->start(1000);
-        m_isSerialData=true;
     }
     else{
-        std::cerr<<"Too many sources to connect to"<<std::endl;
-        quick_exit(-1);
+
+
+        if(SerialPort!=""){
+        /*  serial= new SerialMain(SerialPort);
+            connect(serial,SIGNAL(datRPi ScopeaReceived(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
+            m_isSerialData=true; */
+            slot_ConnectInstrument("Arduino Scope",SerialPort);
+        }
+        else if(NetworkAddr!=""){
+        /*  client = new Client(NetworkAddr);
+            connect(client,SIGNAL(dataReceived(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
+            m_isNetworkData=true;
+            m_is2Channel=true; */
+            slot_ConnectInstrument("RPi Scope",NetworkAddr);
+        }
+        else if(SimFrequency!=""){
+            slot_ConnectInstrument("Simulation",SimFrequency);
+        /*
+            m_timer = new QTimer(this);
+            connect(m_timer, SIGNAL(timeout()), this, SLOT(slot_SimulateData()));
+            connect(this,SIGNAL(signal_SimDone(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
+            m_timer->start(1000);
+            m_isSerialData=true;*/
+        }
+        else{
+            std::cerr<<"Connection Error"<<std::endl;
+            quick_exit(-1);
+        }
+
     }
-
-
 
 
 
@@ -86,8 +101,8 @@ ScopeDataManager::ScopeDataManager(int argc, char ** argv,QObject *parent) :
 
     m_runOctaveScript = new RunOctaveScript;
 
-    display->show();
-    m_Pannel->show();
+    //->show();
+    //m_Pannel->show();
 
 
 
@@ -130,6 +145,27 @@ ScopeDataManager::ScopeDataManager(int argc, char ** argv,QObject *parent) :
     connect(m_Pannel,SIGNAL(Channel2ON(bool)),this,SLOT(slot_ChannelChange(bool)));
 
     connect(m_Pannel,SIGNAL(FX_Changed()),this,SLOT(slot_setUsrFunctionOn()));
+
+
+    MainLayout= new QGridLayout;
+    MainLayout->addWidget(display,0,0,2,1);
+    MainLayout->addWidget(m_Pannel,0,1);
+    MainLayout->addWidget(fftWidget,1,1);
+
+    setFixedHeight(750);
+
+    setLayout(MainLayout);
+
+    show();
+
+    if(m_InstSelect->isVisible()){
+        m_InstSelect->raise();
+        m_InstSelect->activateWindow();
+    }
+
+    m_UserFunctionEdit= new UserFunctionEdit;
+    m_UserFunctionEdit->show();
+
 
 
 }
@@ -431,31 +467,57 @@ void ScopeDataManager::updateUsrFunctionValues(const PlotDataStruct &a){
 
 
 
-        display->setF1Value(m_runOctaveScript->runUsrFunction(a).ReturnValue);
+        display->setF1Value(m_runOctaveScript->runUsrFunction(a,"ExampleUsrFunction"));
     }
 
     if(m_Pannel->isCheckedUsrFunc("F2")){
-        display->setF2Value(100);
+        display->setF2Value(m_runOctaveScript->runUsrFunction(a,"Mean"));
     }
 
     if(m_Pannel->isCheckedUsrFunc("F3")){
-        display->setF3Value(100);
+        display->setF3Value(m_runOctaveScript->runUsrFunction(a,"Min"));
     }
 
     if(m_Pannel->isCheckedUsrFunc("F4")){
-        display->setF4Value(100);
+        display->setF4Value(m_runOctaveScript->runUsrFunction(a,"Max"));
     }
 
     if(m_Pannel->isCheckedUsrFunc("F5")){
-        display->setF5Value(100);
+        display->setF5Value(m_runOctaveScript->runUsrFunction(a,"Frequency"));
     }
 
     if(m_Pannel->isCheckedUsrFunc("F6")){
-        display->setF6Value(100);
+        display->setF6Value(m_runOctaveScript->runUsrFunction(a,"ExampleUsrFunction6"));
     }
 }
 
+void ScopeDataManager::slot_ConnectInstrument(QString Inst, QString Option){
 
+    if(Inst=="Arduino Scope"){
+        serial= new SerialMain(Option);
+        connect(serial,SIGNAL(dataReceived(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
+        m_isSerialData=true;
+    }
+    else if(Inst=="RPi Scope"){
+        client = new Client(Option);
+        connect(client,SIGNAL(dataReceived(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
+        m_isNetworkData=true;
+        m_is2Channel=true;
+    }
+    else if(Inst=="Simulation"){
+
+        m_timer = new QTimer(this);
+        connect(m_timer, SIGNAL(timeout()), this, SLOT(slot_SimulateData()));
+        connect(this,SIGNAL(signal_SimDone(QByteArray)),this,SLOT(slot_receiveData(QByteArray)));
+        m_timer->start(1000);
+        m_isSerialData=true;
+    }
+    else{
+        std::cerr<<"Connection Error"<<std::endl;
+        quick_exit(-1);
+    }
+
+}
 
 
 

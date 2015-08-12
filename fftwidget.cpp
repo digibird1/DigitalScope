@@ -58,7 +58,7 @@ FFTWidget::FFTWidget(QWidget *parent) :
     int Offset=50;
 
     //setFixedSize(1024+2*Offset,800);
-    setFixedSize(640+2*Offset,480);
+    //setFixedSize(640+2*Offset,480);
 
     grid_Main = new QGridLayout;
 
@@ -121,9 +121,19 @@ FFTWidget::FFTWidget(QWidget *parent) :
         btnLogY->setText( "LogY" );
         //btnZoom->setIcon( QPixmap( zoom_xpm ) );
         btnLogY->setCheckable( true );
+
         btnLogY->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
         toolBar->addWidget( btnLogY );
         connect( btnLogY, SIGNAL( toggled( bool ) ), plot,SLOT( setLogY(bool) ) );
+
+        QToolButton *btnAutoScale = new QToolButton( toolBar );
+        btnAutoScale->setText( "AutoScale" );
+        //btnZoom->setIcon( QPixmap( zoom_xpm ) );
+        btnAutoScale->setCheckable( false );
+
+        btnAutoScale->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
+        toolBar->addWidget( btnAutoScale );
+        connect( btnAutoScale, SIGNAL( clicked(bool) ), plot,SLOT( autoScale(bool) ) );
 
 
    /*     QToolButton *btnExport = new QToolButton( toolBar );
@@ -176,7 +186,9 @@ FFTWidget::FFTWidget(QWidget *parent) :
 
         setLayout(grid_Main);
 
-
+    //Run by default in log mode
+    btnLogY->setChecked(true);
+    plot->setLogY(true);
 
 
 

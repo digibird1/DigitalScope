@@ -26,7 +26,7 @@ public:
     RunOctaveScript();
     ~RunOctaveScript();
 
-    UsrFunctionStruct runUsrFunction(const PlotDataStruct &a);
+    UsrFunctionStruct runUsrFunction(const PlotDataStruct &a, QString ScriptName);
 };
 
 #endif // RUNOCTAVESCRIPT_H

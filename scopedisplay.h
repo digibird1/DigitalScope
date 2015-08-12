@@ -31,12 +31,12 @@ public:
 
      //Set the Value of the User function This function should be called before the
      // update is called for the actual sample
-     void setF1Value(double v){F1Value=v;}
-     void setF2Value(double v){F2Value=v;}
-     void setF3Value(double v){F3Value=v;}
-     void setF4Value(double v){F4Value=v;}
-     void setF5Value(double v){F5Value=v;}
-     void setF6Value(double v){F6Value=v;}
+     void setF1Value(UsrFunctionStruct v){F1Value=v;}
+     void setF2Value(UsrFunctionStruct v){F2Value=v;}
+     void setF3Value(UsrFunctionStruct v){F3Value=v;}
+     void setF4Value(UsrFunctionStruct v){F4Value=v;}
+     void setF5Value(UsrFunctionStruct v){F5Value=v;}
+     void setF6Value(UsrFunctionStruct v){F6Value=v;}
 
 
      PlotDataStruct getDataPoints(){return m_dataPoints;}
@@ -96,12 +96,12 @@ private:
     bool m_Channel2;
 
     //values of the user functions
-    double F1Value;
-    double F2Value;
-    double F3Value;
-    double F4Value;
-    double F5Value;
-    double F6Value;
+    UsrFunctionStruct F1Value;
+    UsrFunctionStruct F2Value;
+    UsrFunctionStruct F3Value;
+    UsrFunctionStruct F4Value;
+    UsrFunctionStruct F5Value;
+    UsrFunctionStruct F6Value;
 
     //show the funcion values on the screen
     bool F1_On;

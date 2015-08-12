@@ -10,6 +10,8 @@
 
 #include <qwt_knob.h>
 
+enum enum_ACDC{NONE,AC,DC};
+
 class ControlPannel : public QWidget
 {
     Q_OBJECT
@@ -68,6 +70,7 @@ signals:
     void AutoScale();
     void Channel2ON(bool);
     void FX_Changed();
+    void ACDCChanged(int);
 
     //Add function get which uses status of teh checkbox to return values for f1-f6
 
@@ -82,6 +85,7 @@ public slots:
     void slot_KnobNewValue(int);
     void slot_ChannelChanged();
     void slot_FX_Changed(int);
+    void slot_ACDCChanged();
 
 private:
     QGridLayout *Grid_Main;
@@ -90,12 +94,14 @@ private:
     QGridLayout *Grid_Scale;
     QGridLayout *Grid_Other;
     QGridLayout *Grid_UsrFunc;
+    QGridLayout *Grid_AcDc;
 
     QGroupBox *Group_Other;
     QGroupBox *Group_Trigger;
     QGroupBox *Group_Offset;
     QGroupBox *Group_Scale;
     QGroupBox *Group_UsrFunc;
+    QGroupBox *Group_AcDc;
 
 
 
@@ -134,6 +140,9 @@ private:
     QCheckBox *CheckBox_F5;
     QCheckBox *CheckBox_F6;
 
+    //AC or DC coubling of the scope
+    QRadioButton *RadioB_DC;
+    QRadioButton *RadioB_AC;
 
     bool m_isStop;
     bool m_isSOftTrigger;

@@ -17,6 +17,7 @@ ControlPannel::ControlPannel(QWidget *parent) :
     Grid_Scale=new QGridLayout;
     Grid_Other=new QGridLayout;
     Grid_UsrFunc=new QGridLayout;
+    Grid_AcDc=new QGridLayout;
 
     //Group_Main = new QGroupBox("Scope Control");
     Group_Trigger= new QGroupBox("Trigger");
@@ -24,6 +25,7 @@ ControlPannel::ControlPannel(QWidget *parent) :
     Group_Scale= new QGroupBox("Scale");
     Group_Other= new QGroupBox("Other");
     Group_UsrFunc=new QGroupBox("Usr Func");
+    Group_AcDc=new QGroupBox("AC/DC");
 
     Button_Stop= new QPushButton("Stop");
     Button_FFT= new QPushButton("Perform FFT");
@@ -35,6 +37,11 @@ ControlPannel::ControlPannel(QWidget *parent) :
     RadioB_Range2= new QRadioButton("1-1000 us");
     RadioB_Range3= new QRadioButton("1-1000 ms");
     RadioB_Range1->setChecked(true);
+
+    RadioB_AC= new QRadioButton("AC");
+    RadioB_DC= new QRadioButton("DC");
+    RadioB_AC->setChecked(true);
+
 
     CheckBox_F1 = new QCheckBox("Usr F1");
     CheckBox_F2 = new QCheckBox("Usr F2");
@@ -48,13 +55,10 @@ ControlPannel::ControlPannel(QWidget *parent) :
     //Scroll_Knob->setTotalAngle(1);
     Scroll_Knob->setNumTurns(30);
     Scroll_Knob->setMarkerStyle(QwtKnob::Tick);
-
     Scroll_Knob->setScale(0,30000);
     Scroll_Knob->setScaleStepSize(100);
-
     Scroll_Knob->setTotalSteps(3000);
-
-
+    Scroll_Knob->setFixedSize(150,150);
 
 
     //Trigger
@@ -153,18 +157,26 @@ ControlPannel::ControlPannel(QWidget *parent) :
 
     Group_UsrFunc->setLayout(Grid_UsrFunc);
 
+    Grid_AcDc->addWidget(RadioB_AC,0,0);
+    Grid_AcDc->addWidget(RadioB_DC,1,0);
+
+    Group_AcDc->setLayout(Grid_AcDc);
+
     Grid_Main->addWidget(Group_Trigger,0,0);
     Grid_Main->addWidget(Group_Other,0,1);
     Grid_Main->addWidget(Group_Offset,1,0);
     Grid_Main->addWidget(Group_Scale,1,1);
     Grid_Main->addWidget(Group_UsrFunc,0,2);
+    Grid_Main->addWidget(Group_AcDc,1,2);
 
     setLayout(Grid_Main);
 
     setFixedSize(500,400);
 
 
-    //connect(Slid_V_Trigger,SIGNAL(valueChanged(int)),this,SLOT(slot_TriggerLevelChanged(int)));
+    connect(RadioB_AC,SIGNAL(clicked()),this,SLOT(slot_ACDCChanged()));
+    connect(RadioB_DC,SIGNAL(clicked()),this,SLOT(slot_ACDCChanged()));
+
 
     connect(Slid_V_Trigger,SIGNAL(valueChanged(int)),this,SIGNAL(TriggerLevelChanged(int)));
     connect(Slid_V_Offset,SIGNAL(valueChanged(int)),this,SIGNAL(OffsetYChanged(int)));
@@ -243,6 +255,14 @@ void ControlPannel::slot_ScaleXChanged(int Scale){
 
 
     emit ScaleXChanged(Scale*Range);
+}
+
+void ControlPannel::slot_ACDCChanged(){
+    enum_ACDC ACDC=NONE;
+    if(RadioB_AC->isChecked())ACDC=AC;
+    if(RadioB_DC->isChecked())ACDC=DC;
+
+    emit ACDCChanged((int)ACDC);
 }
 
 void ControlPannel::slot_RangeChanged(){

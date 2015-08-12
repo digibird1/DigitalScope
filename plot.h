@@ -33,6 +33,7 @@ public Q_SLOTS:
 
     void setLogX(bool on);
     void setLogY(bool on);
+    void autoScale(bool b);
 };
 
 #endif // PLOT_H
