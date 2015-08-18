@@ -8,8 +8,9 @@ ControlPannel::ControlPannel(QWidget *parent) :
 {
 
     m_isStop=false;
-    m_isSOftTrigger=true;
+    m_Trigger=SOFT;
     m_is2Channel=false;
+    m_hasHardWareTrigger=false;
 
     Grid_Main=new QGridLayout;
     Grid_Trigger=new QGridLayout;
@@ -29,7 +30,7 @@ ControlPannel::ControlPannel(QWidget *parent) :
 
     Button_Stop= new QPushButton("Stop");
     Button_FFT= new QPushButton("Perform FFT");
-    Button_SoftTrigger = new QPushButton("SoftTrig OFF");
+    Button_Trigger = new QPushButton("Trigger OFF");
     Button_Auto = new QPushButton("Auto");
     Button_Channel = new QPushButton("Set Ch2 ON");
 
@@ -139,7 +140,7 @@ ControlPannel::ControlPannel(QWidget *parent) :
 
     Grid_Other->addWidget(Button_Stop,0,1);
     Grid_Other->addWidget(Button_FFT,1,1);
-    Grid_Other->addWidget(Button_SoftTrigger,2,1);
+    Grid_Other->addWidget(Button_Trigger,2,1);
     Grid_Other->addWidget(Button_Auto,3,1);
     Grid_Other->addWidget(Button_Channel,4,1);
 
@@ -188,7 +189,7 @@ ControlPannel::ControlPannel(QWidget *parent) :
 
     connect(Button_Stop,SIGNAL(clicked()),this,SLOT(slot_StopRunButtonClicked()));
     connect(Button_FFT,SIGNAL(clicked()),this,SIGNAL(PerformFFT()));
-    connect(Button_SoftTrigger,SIGNAL(clicked()),this,SLOT(slot_SoftTriggerChange()));
+    connect(Button_Trigger,SIGNAL(clicked()),this,SLOT(slot_TriggerChange()));
 
 
     connect(RadioB_Range1,SIGNAL(clicked()),this,SLOT(slot_RangeChanged()));
@@ -231,18 +232,30 @@ void ControlPannel::slot_StopRunButtonClicked(){
 
 }
 
-void ControlPannel::slot_SoftTriggerChange(){
+void ControlPannel::slot_TriggerChange(){
 
-    if(m_isSOftTrigger==true){
-        Button_SoftTrigger->setText("SoftTrig ON");
-        m_isSOftTrigger=false;
+    if(m_Trigger==SOFT){
+        if(!m_hasHardWareTrigger)Button_Trigger->setText("SoftTigger ON");
+        else Button_Trigger->setText("HardTigger ON");
+        m_Trigger=OFF;
     }
-    else{
-        Button_SoftTrigger->setText("SoftTrig OFF");
-        m_isSOftTrigger=true;
+    else if(m_Trigger==OFF){
+
+        if(!m_hasHardWareTrigger){
+            Button_Trigger->setText("Triger OFF");
+            m_Trigger=SOFT;
+        }
+        else{
+            Button_Trigger->setText("SoftTrigger ON");
+            m_Trigger=HARD;
+        }
+    }
+    else if(m_Trigger==HARD){
+        Button_Trigger->setText("Triger OFF");
+        m_Trigger=SOFT;
     }
 
-    emit SoftTriggerChanged(m_isSOftTrigger);
+    emit TriggerChanged(m_Trigger);
 }
 
 
@@ -309,4 +322,14 @@ bool ControlPannel::isCheckedUsrFunc(QString X){
     if(X=="F6") return CheckBox_F6->isChecked();
 
     return false;
+}
+
+void ControlPannel::unCheckUsrFunction(QString X){
+    if(X=="F1") CheckBox_F1->setChecked(false);
+    if(X=="F2") CheckBox_F2->setChecked(false);
+    if(X=="F3") CheckBox_F3->setChecked(false);
+    if(X=="F4") CheckBox_F4->setChecked(false);
+    if(X=="F5") CheckBox_F5->setChecked(false);
+    if(X=="F6") CheckBox_F6->setChecked(false);
+
 }

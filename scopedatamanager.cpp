@@ -138,7 +138,7 @@ ScopeDataManager::ScopeDataManager(int argc, char ** argv,QWidget *parent) :
 
     connect(m_Pannel,SIGNAL(PerformFFT()),this,SLOT(slot_callFFT()));
 
-    connect(m_Pannel,SIGNAL(SoftTriggerChanged(bool)),this,SLOT(slot_SoftTriggerChanged(bool)));
+    connect(m_Pannel,SIGNAL(TriggerChanged(enum_Trigger)),this,SLOT(slot_TriggerChanged(enum_Trigger)));
 
     connect(m_Pannel,SIGNAL(AutoScale()),this,SLOT(slot_AutoScale()));
 
@@ -362,9 +362,9 @@ void ScopeDataManager::slot_callFFT(){
 
 }
 
-void ScopeDataManager::slot_SoftTriggerChanged(bool isSoftTrig){
-    m_Trigger.setSoftTrigger(isSoftTrig);
-    display->setSoftTrigger(isSoftTrig);
+void ScopeDataManager::slot_TriggerChanged(enum_Trigger Trig){
+    m_Trigger.setSoftTrigger(Trig==SOFT);
+    display->setSoftTrigger(Trig==SOFT);
 }
 
 void ScopeDataManager::slot_AutoScale(){
@@ -453,7 +453,6 @@ void ScopeDataManager::slot_ChannelChange(bool b){
 }
 
 void ScopeDataManager::slot_setUsrFunctionOn(){
-    std::cout<<"DDD slot_setUsrFunctionOn()"<<std::endl;
     display->slot_showF1(m_Pannel->isCheckedUsrFunc("F1"));
     display->slot_showF2(m_Pannel->isCheckedUsrFunc("F2"));
     display->slot_showF3(m_Pannel->isCheckedUsrFunc("F3"));
@@ -463,31 +462,53 @@ void ScopeDataManager::slot_setUsrFunctionOn(){
 }
 
 void ScopeDataManager::updateUsrFunctionValues(const PlotDataStruct &a){
+    QString BaseName="";
     if(m_Pannel->isCheckedUsrFunc("F1")){
-
-
-
-        display->setF1Value(m_runOctaveScript->runUsrFunction(a,"ExampleUsrFunction"));
+        BaseName=m_UserFunctionEdit->getFunctionName(F1);
+        if(BaseName!="")
+            display->setF1Value(m_runOctaveScript->runUsrFunction(a,BaseName));
+        else
+            m_Pannel->unCheckUsrFunction("F1");
     }
 
     if(m_Pannel->isCheckedUsrFunc("F2")){
-        display->setF2Value(m_runOctaveScript->runUsrFunction(a,"Mean"));
+        BaseName=m_UserFunctionEdit->getFunctionName(F2);
+        if(BaseName!="")
+            display->setF2Value(m_runOctaveScript->runUsrFunction(a,BaseName));
+        else
+            m_Pannel->unCheckUsrFunction("F2");
     }
 
     if(m_Pannel->isCheckedUsrFunc("F3")){
-        display->setF3Value(m_runOctaveScript->runUsrFunction(a,"Min"));
+        BaseName=m_UserFunctionEdit->getFunctionName(F3);
+        if(BaseName!="")
+            display->setF3Value(m_runOctaveScript->runUsrFunction(a,BaseName));
+        else
+            m_Pannel->unCheckUsrFunction("F3");
     }
 
     if(m_Pannel->isCheckedUsrFunc("F4")){
-        display->setF4Value(m_runOctaveScript->runUsrFunction(a,"Max"));
+        BaseName=m_UserFunctionEdit->getFunctionName(F4);
+        if(BaseName!="")
+            display->setF4Value(m_runOctaveScript->runUsrFunction(a,BaseName));
+        else
+            m_Pannel->unCheckUsrFunction("F4");
     }
 
     if(m_Pannel->isCheckedUsrFunc("F5")){
-        display->setF5Value(m_runOctaveScript->runUsrFunction(a,"Frequency"));
+        BaseName=m_UserFunctionEdit->getFunctionName(F5);
+        if(BaseName!="")
+            display->setF5Value(m_runOctaveScript->runUsrFunction(a,BaseName));
+        else
+            m_Pannel->unCheckUsrFunction("F5");
     }
 
     if(m_Pannel->isCheckedUsrFunc("F6")){
-        display->setF6Value(m_runOctaveScript->runUsrFunction(a,"ExampleUsrFunction6"));
+        BaseName=m_UserFunctionEdit->getFunctionName(F6);
+        if(BaseName!="")
+            display->setF6Value(m_runOctaveScript->runUsrFunction(a,BaseName));
+        else
+            m_Pannel->unCheckUsrFunction("F6");
     }
 }
 

@@ -28,10 +28,14 @@ int main(int argc, char ** argv )
  * Make the trigger button with three states Softtrigger, Hardware trigger if available, OFF
  * Channel 2 is only clickable when instrument has two channels
  *
- * Add a window to edit matlab scripts
+ *
  *
  *
  * Add a way to export a screen shot
+ * Option to export the data into a text file
  * Write a Class with general instrument control
+ *
+ * lock user in the UserFunction directory
+ *
  *
  */

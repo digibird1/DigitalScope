@@ -8,12 +8,19 @@
 #include <QWidget>
 #include <QtGui>
 
+enum UserFunctionEnum {F1,F2,F3,F4,F5,F6};
+
 class UserFunctionEdit : public QWidget
 {
     Q_OBJECT
 public:
     explicit UserFunctionEdit(QWidget *parent = 0);
 
+    void editUserFunction(QString FileName);
+    QString getFunctionName(UserFunctionEnum usrFunc);//returns the basename of the *.m file which is the name octave needs to run the script
+    //These functions are setting and returning the full path to the m file
+    QString getFunctionPath(UserFunctionEnum usrFunc);
+    void setFunctionPath(UserFunctionEnum usrFunc, QString Path);
 signals:
 
 public slots:
@@ -32,12 +39,16 @@ public slots:
     void slot_editF5();
     void slot_editF6();
 
+    void slot_saveToFile();
+    void slot_newFile();
+
 private:
     QGridLayout *Grid_Main;
     QGridLayout *Grid_UsrFunc;
     QGroupBox *Group_UsrFuncEdit;
     QPushButton *Button_Save;
     QPushButton *Button_Close;
+    QPushButton *Button_New_File;
 
     QLineEdit *LE_UsrF1;
     QLineEdit *LE_UsrF2;

@@ -11,6 +11,7 @@
 #include <qwt_knob.h>
 
 enum enum_ACDC{NONE,AC,DC};
+enum enum_Trigger{OFF,SOFT,HARD};
 
 class ControlPannel : public QWidget
 {
@@ -50,11 +51,16 @@ public:
 
 
     bool isStop(){return m_isStop;}
-    bool isSoftTrigger(){return m_isSOftTrigger;}
+    bool isSoftTrigger(){return (m_Trigger==SOFT);}
+    void setHasHardWareTrigger(bool t){m_hasHardWareTrigger=t;}
 
     //Check if a function checkbox is checked
     //Opptions are F1, F2 ... F6
     bool isCheckedUsrFunc(QString X);
+    //This function disables the ckeckbox again
+    //This is usefull if an external class wants to disable the ckeck box
+    //for example if the user function does not exist
+    void unCheckUsrFunction(QString X);
 
     
 signals:
@@ -66,7 +72,7 @@ signals:
     void ScaleYChanged2(int);
     void ScaleXChanged(int);
     void PerformFFT();
-    void SoftTriggerChanged(bool);
+    void TriggerChanged(enum_Trigger);
     void AutoScale();
     void Channel2ON(bool);
     void FX_Changed();
@@ -78,7 +84,7 @@ signals:
 public slots:
     void slot_TriggerLevelChanged(int nl);
     void slot_StopRunButtonClicked();
-    void slot_SoftTriggerChange();
+    void slot_TriggerChange();
     void slot_ScaleXChanged(int Scale);
     void slot_RangeChanged();
     void slot_KnobChanged(double);
@@ -118,7 +124,7 @@ private:
 
     QPushButton *Button_Stop;
     QPushButton *Button_FFT;
-    QPushButton *Button_SoftTrigger;
+    QPushButton *Button_Trigger;
     QPushButton *Button_Auto;
     QPushButton *Button_Channel;
 
@@ -145,8 +151,9 @@ private:
     QRadioButton *RadioB_AC;
 
     bool m_isStop;
-    bool m_isSOftTrigger;
+    enum_Trigger m_Trigger;
     bool m_is2Channel;
+    bool m_hasHardWareTrigger;
 
 
     

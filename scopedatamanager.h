@@ -52,7 +52,7 @@ public slots:
     void slot_receiveData(const QByteArray &a);
     void slot_TriggerChange(int tl);
     void slot_callFFT();
-    void slot_SoftTriggerChanged(bool isSoftTrig);
+    void slot_TriggerChanged(enum_Trigger Trig);
 
     void slot_AutoScale();
     void slot_ChannelChange(bool b);
